@@ -12,4 +12,8 @@ export class PlayerModel {
     public getSymbol(): string {
         return this.symbol;
     }
+
+    public getId(): string {
+        return this.id;
+    }
 }
