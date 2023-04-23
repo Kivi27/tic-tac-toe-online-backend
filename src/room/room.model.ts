@@ -5,6 +5,7 @@ export class RoomModel {
     private readonly id: string;
     private readonly name: string;
     private players: PlayerModel[];
+    private readonly MAX_COUNT_PLAYER = 2;
 
     constructor() {
         this.id = uuidv4();
@@ -13,6 +14,8 @@ export class RoomModel {
     }
 
     public joinPlayer(player: PlayerModel): void {
+        if (this.players.length >= this.MAX_COUNT_PLAYER) return;
+
         this.players.push(player);
     }
 
