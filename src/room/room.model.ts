@@ -7,9 +7,9 @@ export class RoomModel {
     private players: PlayerModel[];
     private readonly MAX_COUNT_PLAYER = 2;
 
-    constructor() {
+    constructor(name: string) {
         this.id = uuidv4();
-        this.name = `room ${this.id}`
+        this.name = name;
         this.players = [];
     }
 

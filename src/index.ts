@@ -1,5 +1,6 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { RoomController } from './room/room.controller';
 const express = require('express');
 
 const app = express();
@@ -11,9 +12,11 @@ const io = new Server(httpServer, {
 });
 
 const port = 3000;
+const roomController = new RoomController();
 
 io.on('connection', (socket) => {
     console.log(`connect new socket: ${socket.id}`);
+    socket.emit('initial_room', roomController.getRooms());
 });
 
 httpServer.listen(port, () => {
