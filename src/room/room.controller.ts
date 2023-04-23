@@ -1,4 +1,6 @@
 import { RoomModel } from './room.model';
+import { JoinRoomDto } from '../Dtos/joinRoomDto.dto';
+import { RoomDto } from '../Dtos/room.dto';
 
 export class RoomController {
     public rooms: RoomModel[];
@@ -6,14 +8,13 @@ export class RoomController {
 
     constructor() {
         this.rooms = [];
-
-        for (let i = 0; i < this.defaultCountRoom; i++) {
-            this.rooms.push(new RoomModel(`room ${i}`));
-        }
     }
 
-    public getRooms(): RoomModel[] {
-        return this.rooms;
+    public getRooms(): RoomDto[] {
+        return this.rooms.map((room: RoomModel) => RoomModel.toDto(room));
     }
 
+    public joinPlayer(joinRoomDto: JoinRoomDto): void {
+
+    }
 }

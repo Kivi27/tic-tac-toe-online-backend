@@ -16,7 +16,7 @@ const roomController = new RoomController();
 
 io.on('connection', (socket) => {
     console.log(`connect new socket: ${socket.id}`);
-    socket.emit('initial_room', roomController.getRooms());
+    socket.emit('updateRooms', roomController.getRooms());
 });
 
 httpServer.listen(port, () => {
