@@ -2,6 +2,7 @@ import { RoomModel } from './room.model';
 import { JoinRoomDto } from '../Dtos/joinRoomDto.dto';
 import { RoomDto } from '../Dtos/room.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { PlayerDto } from '../Dtos/player.dto';
 
 export class RoomController {
     public rooms: RoomModel[];
@@ -21,12 +22,15 @@ export class RoomController {
     }
 
     public joinPlayer(joinRoomDto: JoinRoomDto): void {
-        this.rooms.forEach((room: RoomModel) => room.leave(joinRoomDto.player));
-
+        this.leavePlayer(joinRoomDto.player);
         const foundedRoom = this.rooms.find((room: RoomModel) => room.getId() === joinRoomDto.room.id);
 
         if (foundedRoom !== undefined) {
             foundedRoom.join(joinRoomDto.player);
         }
+    }
+
+    public leavePlayer(playerDto: PlayerDto): void {
+        this.rooms.forEach((room: RoomModel) => room.leave(playerDto));
     }
 }
