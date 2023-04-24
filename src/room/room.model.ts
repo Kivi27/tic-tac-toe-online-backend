@@ -14,8 +14,19 @@ export class RoomModel {
         this.players = [];
     }
 
-    public leavePlayer(playerId: string): void {
-        this.players = this.players.filter((player: PlayerModel) => player.getId() !== playerId);
+    public getId(): string {
+        return this.id;
+    }
+
+    public join(player: PlayerDto): void {
+        if (this.players.length >= this.maxCountPlayer) return;
+
+        const playerFromDto = PlayerModel.fromDto(player);
+        this.players.push(playerFromDto);
+    }
+
+    public leave(leavePlayer: PlayerDto): void {
+        this.players = this.players.filter((player: PlayerModel) => player.getId() !== leavePlayer.id);
     }
 
     public static toDto(room: RoomModel): RoomDto {

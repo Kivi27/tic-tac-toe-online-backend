@@ -8,9 +8,9 @@ export class RoomController {
 
     constructor() {
         const roomsDto: RoomDto[] = [
-            {id: uuidv4(), name: 'room 1', players: [], maxCountPlayer: 2},
-            {id: uuidv4(), name: 'room 2', players: [], maxCountPlayer: 2},
-            {id: uuidv4(), name: 'room 3', players: [], maxCountPlayer: 2},
+            { id: uuidv4(), name: 'room 1', players: [], maxCountPlayer: 2 },
+            { id: uuidv4(), name: 'room 2', players: [], maxCountPlayer: 2 },
+            { id: uuidv4(), name: 'room 3', players: [], maxCountPlayer: 2 },
         ];
 
         this.rooms = roomsDto.map((roomDto: RoomDto) => RoomModel.fromDto(roomDto));
@@ -21,6 +21,12 @@ export class RoomController {
     }
 
     public joinPlayer(joinRoomDto: JoinRoomDto): void {
+        this.rooms.forEach((room: RoomModel) => room.leave(joinRoomDto.player));
 
+        const foundedRoom = this.rooms.find((room: RoomModel) => room.getId() === joinRoomDto.room.id);
+
+        if (foundedRoom !== undefined) {
+            foundedRoom.join(joinRoomDto.player);
+        }
     }
 }
