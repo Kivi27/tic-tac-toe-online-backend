@@ -1,9 +1,10 @@
 import { RoomRepository } from './room.repository';
 import { RoomDto } from '../Dtos/room.dto';
 import { RoomEntity } from './room.entity';
-import { JoinRoomDto } from '../Dtos/joinRoomDto.dto';
+import { JoinRoomDto } from '../Dtos/joinRoom.dto';
 import { PlayerRepository } from '../player/player.repository';
 import { PlayerEntity } from '../player/player.entity';
+import { PlayerDto } from '../Dtos/player.dto';
 
 export class RoomService {
     private roomRepository: RoomRepository;
@@ -36,13 +37,24 @@ export class RoomService {
         const room = this.roomRepository.getRoomById(joinRoomDto.room.id);
 
         if (room && player) {
-            if (this.isRoomFull(room)) return;
+            if (this.isRoomFull(room.id)) return;
 
             room.players.push(player);
         }
     }
 
-    public leavePlayerWithAllRoom(playerId: string): void {
+    public isJoinPlayer(room: RoomDto, player: PlayerDto) {
+        const foundedPlayer = this.playerRepository.getById(player.id);
+        const foundedRoom = this.roomRepository.getRoomById(room.id);
+
+        if (foundedPlayer && foundedRoom) {
+            return foundedRoom.hasPlayer(foundedPlayer.id);
+        }
+
+        return false;
+    }
+
+    public leavePlayerWithAllRoom(playerId: string): RoomDto[] {
         const player = this.playerRepository.getById(playerId);
         const rooms = this.roomRepository.getRoomsByPlayerId(playerId);
 
@@ -51,9 +63,17 @@ export class RoomService {
                 room.players = room.players.filter((player: PlayerEntity) => player.id !== playerId);
             });
         }
+
+        return rooms.map((room: RoomEntity) => RoomEntity.toDto(room));
     }
 
-    public isRoomFull(room: RoomEntity): boolean {
-        return room.players.length > room.maxCountPlayer;
+    public isRoomFull(roomId: string): boolean {
+        const room = this.roomRepository.getRoomById(roomId);
+
+        if (room) {
+            return room.players.length >= room.maxCountPlayer;
+        }
+
+        return false;
     }
 }
