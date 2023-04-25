@@ -5,6 +5,8 @@ import { JoinRoomDto } from '../Dtos/joinRoom.dto';
 import { PlayerRepository } from '../player/player.repository';
 import { PlayerEntity } from '../player/player.entity';
 import { PlayerDto } from '../Dtos/player.dto';
+import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
+import { TicTacToeEntity } from '../tic-tac-toe/tic-tac-toe.entity';
 
 export class RoomService {
     private roomRepository: RoomRepository;
@@ -16,6 +18,14 @@ export class RoomService {
     ) {
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
+    }
+
+    public updateTicTacToe(roomId: string, ticTacToeDto: TicTacToeDto): void {
+        const room = this.roomRepository.getRoomById(roomId);
+
+        if (room) {
+            room.ticTacToe = TicTacToeEntity.FromDto(ticTacToeDto);
+        }
     }
 
     public getRooms(): RoomDto[] {

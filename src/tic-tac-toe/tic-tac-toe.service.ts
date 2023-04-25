@@ -6,8 +6,14 @@ import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
 export class TicTacToeService {
     private readonly ticTacToeRepository: TicTacToeRepository;
 
-    constructor(ticTacToeRepository) {
+    constructor(ticTacToeRepository: TicTacToeRepository) {
         this.ticTacToeRepository = ticTacToeRepository;
+    }
+
+    public create(): TicTacToeDto {
+        const ticTacToe = this.ticTacToeRepository.create();
+
+        return TicTacToeEntity.toDto(ticTacToe);
     }
 
     public step(

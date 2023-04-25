@@ -1,17 +1,20 @@
 import { PlayerEntity } from '../player/player.entity';
 import { RoomDto } from '../Dtos/room.dto';
 import { PlayerDto } from '../Dtos/player.dto';
+import { TicTacToeEntity } from '../tic-tac-toe/tic-tac-toe.entity';
 
 export class RoomEntity {
     public id: string;
     public name: string;
     public maxCountPlayer = 2;
     public players: PlayerEntity[];
+    public ticTacToe: TicTacToeEntity | null;
 
     constructor() {
         this.id = '';
         this.name = '';
         this.players = [];
+        this.ticTacToe = null;
     }
 
     public hasPlayer(playerId: string): boolean {

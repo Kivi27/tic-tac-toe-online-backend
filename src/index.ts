@@ -6,6 +6,9 @@ import { RoomService } from './room/room.service';
 import { RoomRepository } from './room/room.repository';
 import { PlayerRepository } from './player/player.repository';
 import { RoomDto } from './Dtos/room.dto';
+import { TicTacToeDto } from './Dtos/tic-tac-toe.dto';
+import { TicTacToeRepository } from './tic-tac-toe/tic-tac-toe.repository';
+import { TicTacToeService } from './tic-tac-toe/tic-tac-toe.service';
 const express = require('express');
 
 const app = express();
@@ -21,9 +24,11 @@ const socketClient = new Map<string, string>;
 
 const roomRepository = new RoomRepository();
 const playerRepository = new PlayerRepository();
+const ticTacToeRepository = new TicTacToeRepository();
 
 const playerService = new PlayerService(playerRepository);
 const roomService = new RoomService(roomRepository, playerRepository);
+const ticTacToeService = new TicTacToeService(ticTacToeRepository);
 
 io.on('connection', (socket) => {
     console.log(`connect new socket: ${socket.id}`);
@@ -42,7 +47,10 @@ io.on('connection', (socket) => {
             socket.join(joinRoomDto.room.id);
 
             if (roomService.isRoomFull(joinRoomDto.room.id)) {
-                io.to(joinRoomDto.room.id).emit('showTicTacToe');
+                const ticTacToe: TicTacToeDto = ticTacToeService.create();
+                roomService.updateTicTacToe(joinRoomDto.room.id, ticTacToe);
+
+                io.to(joinRoomDto.room.id).emit('showTicTacToe', ticTacToe);
             }
         }
 

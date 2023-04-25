@@ -8,6 +8,7 @@ export class TicTacToeEntity {
     public field: string[][];
 
     constructor() {
+        this.id  = '';
         this.field = [];
 
         for (let i = 0; i < this.countRow; i++) {
