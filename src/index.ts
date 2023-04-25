@@ -1,8 +1,10 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { RoomController } from './room/room.controller';
-import { PlayerController } from './player/player.controller';
 import { JoinRoomDto } from './Dtos/joinRoomDto.dto';
+import { PlayerService } from './player/player.service';
+import { RoomService } from './room/room.service';
+import { RoomRepository } from './room/room.repository';
+import { PlayerRepository } from './player/player.repository';
 const express = require('express');
 
 const app = express();
@@ -15,8 +17,12 @@ const io = new Server(httpServer, {
 
 const port = 3000;
 const socketClient = new Map<string, string>;
-const roomController = new RoomController();
-const playerController = new PlayerController();
+
+const roomRepository = new RoomRepository();
+const playerRepository = new PlayerRepository();
+
+const playerController = new PlayerService(playerRepository);
+const roomController = new RoomService(roomRepository, playerRepository);
 
 io.on('connection', (socket) => {
     console.log(`connect new socket: ${socket.id}`);
@@ -28,6 +34,7 @@ io.on('connection', (socket) => {
     socket.emit('updateRooms', roomController.getRooms());
 
     socket.on('joinPlayer', (joinRoomDto: JoinRoomDto) => {
+        roomController.leavePlayerWithAllRoom(joinRoomDto.player.id);
         roomController.joinPlayer(joinRoomDto);
         io.emit('updateRooms', roomController.getRooms());
     });
@@ -37,14 +44,9 @@ io.on('connection', (socket) => {
 
         if (!leavePlayerId) return;
 
-        const leavePlayer = playerController.getById(leavePlayerId);
-
-        if (leavePlayer) {
-            roomController.leavePlayer(leavePlayer);
-            io.emit('updateRooms', roomController.getRooms());
-        }
+        roomController.leavePlayerWithAllRoom(leavePlayerId);
+        io.emit('updateRooms', roomController.getRooms());
     });
-
 });
 
 httpServer.listen(port, () => {

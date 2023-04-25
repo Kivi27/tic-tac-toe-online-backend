@@ -1,4 +1,4 @@
-import { PlayerModel } from '../player/player.model';
+import { PlayerEntity } from '../player/player.entity';
 
 export class TicTocToeModel {
     private readonly countRow = 3;
@@ -19,7 +19,7 @@ export class TicTocToeModel {
         }
     }
 
-    public step(selectRow: number, selectColumn: number, player: PlayerModel): PlayerModel | undefined {
+    public step(selectRow: number, selectColumn: number, player: PlayerEntity): PlayerEntity | undefined {
         if (!this.isFreeCell(selectRow, selectColumn)) return;
 
         this.changeCell(selectRow, selectColumn, player);
@@ -30,8 +30,8 @@ export class TicTocToeModel {
     private isFreeCell(selectRow: number, selectColumn: number): boolean {
         return this.field[selectRow][selectColumn] === this.EMPTY_CELL;
     }
-    private changeCell(selectRow: number, selectColumn: number, player: PlayerModel): void {
-        this.field[selectRow][selectColumn] = player.getSymbol();
+    private changeCell(selectRow: number, selectColumn: number, player: PlayerEntity): void {
+        this.field[selectRow][selectColumn] = player.symbol;
     }
 
     public debugPrint(): void {
@@ -44,15 +44,15 @@ export class TicTocToeModel {
         }
     }
 
-    private isWin(player: PlayerModel): boolean {
+    private isWin(player: PlayerEntity): boolean {
         return this.isWinHorizontal(player)
             || this.isWinVertical(player)
             || this.isWinMainDiagonal(player)
             || this.isWinSideDiagonal(player);
     }
 
-    private isWinHorizontal(player: PlayerModel): boolean {
-        const playerSymbol = player.getSymbol();
+    private isWinHorizontal(player: PlayerEntity): boolean {
+        const playerSymbol = player.symbol;
 
         for (let i = 0; i < this.countRow; i++) {
             let countWinCell = 0;
@@ -69,8 +69,8 @@ export class TicTocToeModel {
         return false;
     }
 
-    private isWinVertical(player: PlayerModel): boolean {
-        const playerSymbol = player.getSymbol();
+    private isWinVertical(player: PlayerEntity): boolean {
+        const playerSymbol = player.symbol;
         for (let i = 0; i < this.countColumn; i++) {
             let countWinCell = 0;
 
@@ -86,8 +86,8 @@ export class TicTocToeModel {
         return false;
     }
 
-    private isWinMainDiagonal(player: PlayerModel): boolean {
-        const playerSymbol = player.getSymbol();
+    private isWinMainDiagonal(player: PlayerEntity): boolean {
+        const playerSymbol = player.symbol;
         let countWinCell = 0;
 
         for (let i = 0; i < this.countRow; i++) {
@@ -99,8 +99,8 @@ export class TicTocToeModel {
         return countWinCell === this.countRow;
     }
 
-    private isWinSideDiagonal(player: PlayerModel): boolean {
-        const playerSymbol = player.getSymbol();
+    private isWinSideDiagonal(player: PlayerEntity): boolean {
+        const playerSymbol = player.symbol;
         let countWinCell = 0;
 
         for (let i = 0; i < this.countRow; i++) {
