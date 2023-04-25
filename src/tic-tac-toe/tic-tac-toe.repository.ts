@@ -9,4 +9,8 @@ export class TicTacToeRepository {
 
         return ticTacToe;
     }
+
+    public getById(ticTacToeId: string): TicTacToeEntity | undefined {
+        return this.ticTacToes.find((ticTacToe: TicTacToeEntity) => ticTacToe.id === ticTacToeId);
+    }
 }

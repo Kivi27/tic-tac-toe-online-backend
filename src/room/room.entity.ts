@@ -5,8 +5,8 @@ import { PlayerDto } from '../Dtos/player.dto';
 export class RoomEntity {
     public id: string;
     public name: string;
-    public players: PlayerEntity[];
     public maxCountPlayer = 2;
+    public players: PlayerEntity[];
 
     constructor() {
         this.id = '';

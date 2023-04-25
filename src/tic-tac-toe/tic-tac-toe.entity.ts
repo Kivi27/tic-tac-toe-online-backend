@@ -1,6 +1,7 @@
 import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
 
 export class TicTacToeEntity {
+    public id: string;
     public countRow = 3;
     public countColumn = 3;
     public EMPTY_CELL = ' ';
@@ -20,6 +21,7 @@ export class TicTacToeEntity {
 
     public static toDto(ticTacToe: TicTacToeEntity): TicTacToeDto {
         return {
+            id: ticTacToe.id,
             countRow: ticTacToe.countRow,
             countColumn: ticTacToe.countColumn,
             field: ticTacToe.field,
@@ -28,6 +30,7 @@ export class TicTacToeEntity {
 
     public static FromDto(ticTacToeDto: TicTacToeDto): TicTacToeEntity {
         const ticTacToe = new TicTacToeEntity();
+        ticTacToe.id = ticTacToeDto.id;
         ticTacToe.countRow = ticTacToeDto.countRow;
         ticTacToe.countColumn = ticTacToeDto.countColumn;
         ticTacToe.field = ticTacToeDto.field;

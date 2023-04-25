@@ -10,12 +10,6 @@ export class TicTacToeService {
         this.ticTacToeRepository = ticTacToeRepository;
     }
 
-    public create(): TicTacToeDto {
-        const ticTacToe = this.ticTacToeRepository.create();
-
-        return TicTacToeEntity.toDto(ticTacToe);
-    }
-
     public step(
         ticTacToeDto: TicTacToeDto,
         selectRow: number,
