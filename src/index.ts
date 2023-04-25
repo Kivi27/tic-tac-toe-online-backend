@@ -21,22 +21,23 @@ const socketClient = new Map<string, string>;
 const roomRepository = new RoomRepository();
 const playerRepository = new PlayerRepository();
 
-const playerController = new PlayerService(playerRepository);
-const roomController = new RoomService(roomRepository, playerRepository);
+const playerService = new PlayerService(playerRepository);
+const roomService = new RoomService(roomRepository, playerRepository);
 
 io.on('connection', (socket) => {
     console.log(`connect new socket: ${socket.id}`);
 
-    const player = playerController.create();
+    const player = playerService.create();
     socketClient.set(socket.id, player.id);
 
     socket.emit('getPlayer', player);
-    socket.emit('updateRooms', roomController.getRooms());
+    socket.emit('updateRooms', roomService.getRooms());
 
     socket.on('joinPlayer', (joinRoomDto: JoinRoomDto) => {
-        roomController.leavePlayerWithAllRoom(joinRoomDto.player.id);
-        roomController.joinPlayer(joinRoomDto);
-        io.emit('updateRooms', roomController.getRooms());
+        roomService.leavePlayerWithAllRoom(joinRoomDto.player.id);
+        roomService.joinPlayer(joinRoomDto);
+        io.emit('updateRooms', roomService.getRooms());
+
     });
 
     socket.on('disconnect', () => {
@@ -44,8 +45,8 @@ io.on('connection', (socket) => {
 
         if (!leavePlayerId) return;
 
-        roomController.leavePlayerWithAllRoom(leavePlayerId);
-        io.emit('updateRooms', roomController.getRooms());
+        roomService.leavePlayerWithAllRoom(leavePlayerId);
+        io.emit('updateRooms', roomService.getRooms());
     });
 });
 
