@@ -1,10 +1,11 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { JoinRoomDto } from './Dtos/joinRoomDto.dto';
+import { JoinRoomDto } from './Dtos/joinRoom.dto';
 import { PlayerService } from './player/player.service';
 import { RoomService } from './room/room.service';
 import { RoomRepository } from './room/room.repository';
 import { PlayerRepository } from './player/player.repository';
+import { RoomDto } from './Dtos/room.dto';
 const express = require('express');
 
 const app = express();
@@ -36,17 +37,28 @@ io.on('connection', (socket) => {
     socket.on('joinPlayer', (joinRoomDto: JoinRoomDto) => {
         roomService.leavePlayerWithAllRoom(joinRoomDto.player.id);
         roomService.joinPlayer(joinRoomDto);
-        io.emit('updateRooms', roomService.getRooms());
 
+        if (roomService.isJoinPlayer(joinRoomDto.room, joinRoomDto.player)) {
+            socket.join(joinRoomDto.room.id);
+
+            if (roomService.isRoomFull(joinRoomDto.room.id)) {
+                io.to(joinRoomDto.room.id).emit('showTicTacToe');
+            }
+        }
+
+        io.emit('updateRooms', roomService.getRooms());
     });
 
     socket.on('disconnect', () => {
         const leavePlayerId = socketClient.get(socket.id);
 
-        if (!leavePlayerId) return;
+        if (leavePlayerId) {
+            const rooms = roomService.leavePlayerWithAllRoom(leavePlayerId);
 
-        roomService.leavePlayerWithAllRoom(leavePlayerId);
-        io.emit('updateRooms', roomService.getRooms());
+            rooms.forEach((room: RoomDto) => socket.leave(room.id));
+
+            io.emit('updateRooms', roomService.getRooms());
+        }
     });
 });
 
