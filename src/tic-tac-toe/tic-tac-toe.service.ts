@@ -1,7 +1,7 @@
 import { PlayerEntity } from '../player/player.entity';
 import { TicTacToeRepository } from './tic-tac-toe.repository';
 import { TicTacToeEntity } from './tic-tac-toe.entity';
-import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
+import { TicTacToeDto } from '../dtos/tic-tac-toe.dto';
 
 export class TicTacToeService {
     private readonly ticTacToeRepository: TicTacToeRepository;

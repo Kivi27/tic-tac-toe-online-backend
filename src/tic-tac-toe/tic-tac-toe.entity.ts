@@ -1,4 +1,4 @@
-import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
+import { TicTacToeDto } from '../dtos/tic-tac-toe.dto';
 
 export class TicTacToeEntity {
     public id: string;

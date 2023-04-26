@@ -1,5 +1,5 @@
 import { PlayerEntity } from './player.entity';
-import { PlayerDto } from '../Dtos/player.dto';
+import { PlayerDto } from '../dtos/player.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 export class PlayerRepository {

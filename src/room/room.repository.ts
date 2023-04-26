@@ -1,5 +1,5 @@
 import { RoomEntity } from './room.entity';
-import { RoomDto } from '../Dtos/room.dto';
+import { RoomDto } from '../dtos/room.dto';
 import { v4 as uuidv4 } from 'uuid';
 
 export class RoomRepository {

@@ -1,12 +1,12 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { JoinRoomDto } from './Dtos/joinRoom.dto';
+import { JoinRoomDto } from './dtos/joinRoom.dto';
 import { PlayerService } from './player/player.service';
 import { RoomService } from './room/room.service';
 import { RoomRepository } from './room/room.repository';
 import { PlayerRepository } from './player/player.repository';
-import { RoomDto } from './Dtos/room.dto';
-import { TicTacToeDto } from './Dtos/tic-tac-toe.dto';
+import { RoomDto } from './dtos/room.dto';
+import { TicTacToeDto } from './dtos/tic-tac-toe.dto';
 import { TicTacToeRepository } from './tic-tac-toe/tic-tac-toe.repository';
 import { TicTacToeService } from './tic-tac-toe/tic-tac-toe.service';
 const express = require('express');

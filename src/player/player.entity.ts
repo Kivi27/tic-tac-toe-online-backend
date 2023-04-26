@@ -1,4 +1,4 @@
-import { PlayerDto } from '../Dtos/player.dto';
+import { PlayerDto } from '../dtos/player.dto';
 
 export class PlayerEntity {
     public id: string;

@@ -1,6 +1,6 @@
 import { PlayerEntity } from '../player/player.entity';
-import { RoomDto } from '../Dtos/room.dto';
-import { PlayerDto } from '../Dtos/player.dto';
+import { RoomDto } from '../dtos/room.dto';
+import { PlayerDto } from '../dtos/player.dto';
 import { TicTacToeEntity } from '../tic-tac-toe/tic-tac-toe.entity';
 
 export class RoomEntity {

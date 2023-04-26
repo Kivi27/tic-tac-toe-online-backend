@@ -1,5 +1,5 @@
 import { PlayerRepository } from './player.repository';
-import { PlayerDto } from '../Dtos/player.dto';
+import { PlayerDto } from '../dtos/player.dto';
 import { PlayerEntity } from './player.entity';
 
 export class PlayerService {

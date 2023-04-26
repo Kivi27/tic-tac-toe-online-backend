@@ -1,11 +1,11 @@
 import { RoomRepository } from './room.repository';
-import { RoomDto } from '../Dtos/room.dto';
+import { RoomDto } from '../dtos/room.dto';
 import { RoomEntity } from './room.entity';
-import { JoinRoomDto } from '../Dtos/joinRoom.dto';
+import { JoinRoomDto } from '../dtos/joinRoom.dto';
 import { PlayerRepository } from '../player/player.repository';
 import { PlayerEntity } from '../player/player.entity';
-import { PlayerDto } from '../Dtos/player.dto';
-import { TicTacToeDto } from '../Dtos/tic-tac-toe.dto';
+import { PlayerDto } from '../dtos/player.dto';
+import { TicTacToeDto } from '../dtos/tic-tac-toe.dto';
 import { TicTacToeEntity } from '../tic-tac-toe/tic-tac-toe.entity';
 
 export class RoomService {
