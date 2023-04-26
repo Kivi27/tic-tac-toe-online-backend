@@ -11,6 +11,7 @@ export class TicTacToeRepository {
     public create(): TicTacToeEntity {
         const ticTacToe = new TicTacToeEntity();
         ticTacToe.id = uuidv4();
+        ticTacToe.symbolNextPlayer = 'X';
 
         this.ticTacToes.push(ticTacToe);
 

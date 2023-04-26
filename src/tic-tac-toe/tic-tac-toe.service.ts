@@ -31,13 +31,33 @@ export class TicTacToeService {
         const ticTacToe = this.ticTacToeRepository.getById(ticTacToeId);
         const player = this.playerRepository.getById(playerId);
 
-        if (!ticTacToe || !player) return;
+        if (ticTacToe && player) {
+            const isFreeCell = this.isFreeCell(ticTacToe, selectRow, selectColumn);
+            const isCorrectPlayer = ticTacToe.symbolNextPlayer !== player.symbol;
 
-        if (!this.isFreeCell(ticTacToe,selectRow, selectColumn)) return;
+            if (!isFreeCell || !isCorrectPlayer) {
+                this.changeCell(ticTacToe, selectRow, selectColumn, player);
+                ticTacToe.symbolNextPlayer = this.changeCurrentPlayer(ticTacToe.symbolNextPlayer);
+            }
+        }
 
-        this.changeCell(ticTacToe, selectRow, selectColumn, player);
+        return ticTacToe
+            ? TicTacToeEntity.toDto(ticTacToe)
+            : undefined;
+    }
 
-        return TicTacToeEntity.toDto(ticTacToe);
+    public isWin(ticTacToeId: string, playerId: string): boolean {
+        const ticTacToe = this.ticTacToeRepository.getById(ticTacToeId);
+        const player = this.playerRepository.getById(playerId);
+
+        if (ticTacToe && player) {
+            return this.isWinHorizontal(ticTacToe, player)
+                || this.isWinVertical(ticTacToe, player)
+                || this.isWinMainDiagonal(ticTacToe, player)
+                || this.isWinSideDiagonal(ticTacToe, player);
+        }
+
+        return false;
     }
 
     public clean(ticTacToeId: string): void {
@@ -66,6 +86,12 @@ export class TicTacToeService {
         }
     }
 
+    private changeCurrentPlayer(symbolCurrentPlayer: string): string {
+        return symbolCurrentPlayer === 'X'
+            ? 'O'
+            : 'X';
+    }
+
     private isFreeCell(
         ticTacToe: TicTacToeEntity,
         selectRow: number,
@@ -81,13 +107,6 @@ export class TicTacToeService {
         player: PlayerEntity
     ): void {
         ticTacToe.field[selectRow][selectColumn] = player.symbol;
-    }
-
-    private isWin(ticTacToe: TicTacToeEntity, player: PlayerEntity): boolean {
-        return this.isWinHorizontal(ticTacToe, player)
-            || this.isWinVertical(ticTacToe, player)
-            || this.isWinMainDiagonal(ticTacToe, player)
-            || this.isWinSideDiagonal(ticTacToe, player);
     }
 
     private isWinHorizontal(ticTacToe: TicTacToeEntity, player: PlayerEntity): boolean {

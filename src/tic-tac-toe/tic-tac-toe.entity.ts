@@ -6,9 +6,11 @@ export class TicTacToeEntity {
     public countColumn = 3;
     public EMPTY_CELL = ' ';
     public field: string[][];
+    public symbolNextPlayer: string;
 
     constructor() {
         this.id  = '';
+        this.symbolNextPlayer = '';
         this.field = [];
 
         for (let i = 0; i < this.countRow; i++) {
