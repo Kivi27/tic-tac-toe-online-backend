@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
                 const ticTacToe: TicTacToeDto = ticTacToeService.create();
                 roomService.updateTicTacToe(joinRoomDto.room.id, ticTacToe);
 
-                io.to(joinRoomDto.room.id).emit('showTicTacToe', ticTacToe);
+                io.to(joinRoomDto.room.id).emit('createOrUpdateTicTacToe', ticTacToe);
             }
         }
 
