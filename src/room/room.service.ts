@@ -1,7 +1,7 @@
 import { RoomRepository } from './room.repository';
 import { RoomDto } from '../dtos/room.dto';
 import { RoomEntity } from './room.entity';
-import { JoinRoomDto } from '../dtos/joinRoom.dto';
+import { JoinRoomDto } from '../dtos/join-room.dto';
 import { PlayerRepository } from '../player/player.repository';
 import { PlayerEntity } from '../player/player.entity';
 import { PlayerDto } from '../dtos/player.dto';
