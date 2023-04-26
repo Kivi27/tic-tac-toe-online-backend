@@ -24,6 +24,8 @@ export class RoomService {
         const room = this.roomRepository.getRoomById(roomId);
 
         if (room) {
+            this.playerRepository.updatePlayerSymbol(room.players[0].id, 'X');
+            this.playerRepository.updatePlayerSymbol(room.players[1].id, 'O');
             room.ticTacToe = TicTacToeEntity.FromDto(ticTacToeDto);
         }
     }

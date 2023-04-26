@@ -24,4 +24,12 @@ export class PlayerRepository {
     public getById(playerId: string): PlayerEntity | undefined {
         return  this.players.find((player: PlayerEntity) => playerId == player.id);
     }
+
+    public updatePlayerSymbol(playerId: string, playerSymbol: string): void {
+        const player = this.getById(playerId);
+
+        if (player) {
+            player.symbol = playerSymbol;
+        }
+    }
 }

@@ -2,12 +2,18 @@ import { PlayerEntity } from '../player/player.entity';
 import { TicTacToeRepository } from './tic-tac-toe.repository';
 import { TicTacToeEntity } from './tic-tac-toe.entity';
 import { TicTacToeDto } from '../dtos/tic-tac-toe.dto';
+import { PlayerRepository } from '../player/player.repository';
 
 export class TicTacToeService {
     private readonly ticTacToeRepository: TicTacToeRepository;
+    private readonly playerRepository: PlayerRepository;
 
-    constructor(ticTacToeRepository: TicTacToeRepository) {
+    constructor(
+        ticTacToeRepository: TicTacToeRepository,
+        playerRepository: PlayerRepository,
+    ) {
         this.ticTacToeRepository = ticTacToeRepository;
+        this.playerRepository = playerRepository;
     }
 
     public create(): TicTacToeDto {
@@ -17,18 +23,35 @@ export class TicTacToeService {
     }
 
     public step(
-        ticTacToeDto: TicTacToeDto,
+        ticTacToeId: string,
+        playerId: string,
         selectRow: number,
         selectColumn: number,
-        player: PlayerEntity
-    ): PlayerEntity | undefined {
-        const ticTacToe = TicTacToeEntity.FromDto(ticTacToeDto);
+    ): TicTacToeDto | undefined {
+        const ticTacToe = this.ticTacToeRepository.getById(ticTacToeId);
+        const player = this.playerRepository.getById(playerId);
+
+        if (!ticTacToe || !player) return;
 
         if (!this.isFreeCell(ticTacToe,selectRow, selectColumn)) return;
 
         this.changeCell(ticTacToe, selectRow, selectColumn, player);
 
-        return this.isWin(ticTacToe, player) ? player : undefined;
+        return TicTacToeEntity.toDto(ticTacToe);
+    }
+
+    public clean(ticTacToeId: string): void {
+        const ticTacToe = this.ticTacToeRepository.getById(ticTacToeId);
+
+        if (!ticTacToe) return;
+
+        for (let i = 0; i < ticTacToe.countRow; i++) {
+            ticTacToe.field[i] = [];
+
+            for (let j = 0; j < ticTacToe.countColumn; j++) {
+                ticTacToe.field[i][j] = ' ';
+            }
+        }
     }
 
     public debugPrint(ticTacToeDto: TicTacToeDto): void {
