@@ -67,16 +67,28 @@ io.on('connection', (socket) => {
             clickCell.selectRow,
             clickCell.selectColumn
         );
+        const isWin = ticTacToeService.isWin(clickCell.ticTacToeId, clickCell.playerId);
 
         io.to(clickCell.roomId).emit('createOrUpdateTicTacToe', ticTacToeDto);
+
+        if (isWin) {
+            io.to(clickCell.roomId).emit('winner', playerService.getById(clickCell.playerId));
+        }
     });
 
     socket.on('disconnect', () => {
         const leavePlayerId = socketClient.get(socket.id);
 
         if (leavePlayerId) {
+            const leaveRoom = roomService.getRoomByPlayerId(leavePlayerId);
+
+            if (leaveRoom && roomService.isRoomFull(leaveRoom.id)) {
+                io.to(leaveRoom.id).emit('playerExitLobby');
+            }
+
             socketClean(socket, leavePlayerId);
             io.emit('updateRooms', roomService.getRooms());
+            socketClient.delete(socket.id);
         }
     });
 });
