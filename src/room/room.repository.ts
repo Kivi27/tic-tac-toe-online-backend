@@ -35,4 +35,11 @@ export class RoomRepository {
         return rooms;
     }
 
+    public getRoomByPlayerId(playerId: string): RoomEntity | undefined {
+        return this.rooms.find((room: RoomEntity) => {
+            if (room.hasPlayer(playerId)) {
+                return room;
+            }
+        });
+    }
 }

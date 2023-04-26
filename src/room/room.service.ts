@@ -44,6 +44,14 @@ export class RoomService {
             : undefined;
     }
 
+    public getRoomByPlayerId(playerId: string): RoomDto | undefined {
+        const room = this.roomRepository.getRoomByPlayerId(playerId);
+
+        return room
+            ? RoomEntity.toDto(room)
+            : undefined;
+    }
+
     public joinPlayer(joinRoomDto: JoinRoomDto): void {
         const player = this.playerRepository.getById(joinRoomDto.player.id);
         const room = this.roomRepository.getRoomById(joinRoomDto.room.id);
