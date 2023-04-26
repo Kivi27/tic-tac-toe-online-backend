@@ -7,26 +7,39 @@ import { PlayerEntity } from '../player/player.entity';
 import { PlayerDto } from '../dtos/player.dto';
 import { TicTacToeDto } from '../dtos/tic-tac-toe.dto';
 import { TicTacToeEntity } from '../tic-tac-toe/tic-tac-toe.entity';
+import { TicTacToeRepository } from '../tic-tac-toe/tic-tac-toe.repository';
 
 export class RoomService {
-    private roomRepository: RoomRepository;
-    private playerRepository: PlayerRepository;
+    private readonly roomRepository: RoomRepository;
+    private readonly playerRepository: PlayerRepository;
+    private readonly ticTacToeRepository: TicTacToeRepository;
 
     constructor(
         roomRepository: RoomRepository,
         playerRepository: PlayerRepository,
+        ticTacToeRepository: TicTacToeRepository,
     ) {
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
+        this.ticTacToeRepository = ticTacToeRepository;
     }
 
-    public updateTicTacToe(roomId: string, ticTacToeDto: TicTacToeDto): void {
+    public attachTicTacToe(roomId: string, ticTacToeDto: TicTacToeDto): void {
         const room = this.roomRepository.getRoomById(roomId);
 
         if (room) {
             this.playerRepository.updatePlayerSymbol(room.players[0].id, 'X');
             this.playerRepository.updatePlayerSymbol(room.players[1].id, 'O');
             room.ticTacToe = TicTacToeEntity.FromDto(ticTacToeDto);
+        }
+    }
+
+    public detachTicTacToe(roomId: string): void {
+        const room = this.roomRepository.getRoomById(roomId);
+
+        if (room && room.ticTacToe) {
+            this.ticTacToeRepository.delete(room.ticTacToe.id);
+            room.ticTacToe = null;
         }
     }
 

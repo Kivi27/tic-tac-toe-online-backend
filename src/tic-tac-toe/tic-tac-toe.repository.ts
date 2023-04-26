@@ -2,7 +2,7 @@ import { TicTacToeEntity } from './tic-tac-toe.entity';
 import { v4 as uuidv4 } from 'uuid';
 
 export class TicTacToeRepository {
-    private readonly ticTacToes: TicTacToeEntity[];
+    private ticTacToes: TicTacToeEntity[];
 
     constructor() {
         this.ticTacToes = [];
@@ -14,11 +14,16 @@ export class TicTacToeRepository {
         ticTacToe.symbolNextPlayer = 'X';
 
         this.ticTacToes.push(ticTacToe);
+        console.log(this.ticTacToes);
 
         return ticTacToe;
     }
 
     public getById(ticTacToeId: string): TicTacToeEntity | undefined {
         return this.ticTacToes.find((ticTacToe: TicTacToeEntity) => ticTacToe.id === ticTacToeId);
+    }
+
+    public delete(ticTacToeId: string): void {
+        this.ticTacToes = this.ticTacToes.filter((ticTacToe: TicTacToeEntity) => ticTacToe.id !== ticTacToeId);
     }
 }

@@ -29,7 +29,7 @@ const playerRepository = new PlayerRepository();
 const ticTacToeRepository = new TicTacToeRepository();
 
 const playerService = new PlayerService(playerRepository);
-const roomService = new RoomService(roomRepository, playerRepository);
+const roomService = new RoomService(roomRepository, playerRepository, ticTacToeRepository);
 const ticTacToeService = new TicTacToeService(ticTacToeRepository, playerRepository);
 
 io.on('connection', (socket) => {
@@ -50,14 +50,14 @@ io.on('connection', (socket) => {
 
             if (roomService.isRoomFull(joinRoomDto.room.id)) {
                 const ticTacToe: TicTacToeDto = ticTacToeService.create();
-                roomService.updateTicTacToe(joinRoomDto.room.id, ticTacToe);
+                roomService.attachTicTacToe(joinRoomDto.room.id, ticTacToe);
 
                 io.to(joinRoomDto.room.id).emit('createOrUpdateTicTacToe', ticTacToe);
             }
         }
 
         io.emit('updateRooms', roomService.getRooms());
-        io.emit('getCurrentRoom', joinRoomDto.room.id);
+        socket.emit('getCurrentRoom', joinRoomDto.room.id);
     });
 
     socket.on('clickCell', (clickCell: ClickCellDto) => {
@@ -67,7 +67,11 @@ io.on('connection', (socket) => {
             clickCell.selectRow,
             clickCell.selectColumn
         );
+        console.log('click');
+        console.log(ticTacToeDto);
+
         const isWin = ticTacToeService.isWin(clickCell.ticTacToeId, clickCell.playerId);
+
 
         io.to(clickCell.roomId).emit('createOrUpdateTicTacToe', ticTacToeDto);
 
@@ -83,6 +87,7 @@ io.on('connection', (socket) => {
             const leaveRoom = roomService.getRoomByPlayerId(leavePlayerId);
 
             if (leaveRoom && roomService.isRoomFull(leaveRoom.id)) {
+                roomService.detachTicTacToe(leaveRoom.id);
                 io.to(leaveRoom.id).emit('playerExitLobby');
             }
 
