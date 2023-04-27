@@ -79,10 +79,10 @@ export class TicTacToeService {
 
         for (let i = 0; i < ticTacToe.countRow; i++) {
             let str = '';
+
             for (let j = 0; j < ticTacToe.countColumn; j++) {
                 str += ticTacToe.field[i][j] + '|';
             }
-            console.log(str);
         }
     }
 

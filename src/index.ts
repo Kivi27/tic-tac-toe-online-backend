@@ -33,7 +33,6 @@ const roomService = new RoomService(roomRepository, playerRepository, ticTacToeR
 const ticTacToeService = new TicTacToeService(ticTacToeRepository, playerRepository);
 
 io.on('connection', (socket) => {
-    console.log(`connect new socket: ${socket.id}`);
 
     const player = playerService.create();
     socketClient.set(socket.id, player.id);
@@ -67,13 +66,10 @@ io.on('connection', (socket) => {
             clickCell.selectRow,
             clickCell.selectColumn
         );
-        console.log('click');
-        console.log(ticTacToeDto);
-
-        const isWin = ticTacToeService.isWin(clickCell.ticTacToeId, clickCell.playerId);
-
 
         io.to(clickCell.roomId).emit('createOrUpdateTicTacToe', ticTacToeDto);
+
+        const isWin = ticTacToeService.isWin(clickCell.ticTacToeId, clickCell.playerId);
 
         if (isWin) {
             io.to(clickCell.roomId).emit('winner', playerService.getById(clickCell.playerId));
@@ -108,5 +104,5 @@ function socketClean(
 }
 
 httpServer.listen(port, () => {
-    console.log('Socket server is begin work...');
+    console.log(`Server is begin work... Port: ${port}`);
 });

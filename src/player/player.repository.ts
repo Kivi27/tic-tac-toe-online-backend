@@ -12,7 +12,7 @@ export class PlayerRepository {
     public create(): PlayerEntity {
         const playerDto: PlayerDto = {
             id: uuidv4(),
-            symbol: 'X',
+            symbol: '-',
         }
 
         const player = PlayerEntity.fromDto(playerDto);
@@ -22,7 +22,7 @@ export class PlayerRepository {
     }
 
     public getById(playerId: string): PlayerEntity | undefined {
-        return  this.players.find((player: PlayerEntity) => playerId == player.id);
+        return this.players.find((player: PlayerEntity) => playerId == player.id);
     }
 
     public updatePlayerSymbol(playerId: string, playerSymbol: string): void {

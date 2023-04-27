@@ -14,7 +14,6 @@ export class TicTacToeRepository {
         ticTacToe.symbolNextPlayer = 'X';
 
         this.ticTacToes.push(ticTacToe);
-        console.log(this.ticTacToes);
 
         return ticTacToe;
     }
