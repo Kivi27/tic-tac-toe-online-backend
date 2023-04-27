@@ -17,7 +17,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        origin: ["http://localhost:63342"]
+        origin: ["https://tic-tac-toe-online-frontend.onrender.com:3000"]
     }
 });
 
